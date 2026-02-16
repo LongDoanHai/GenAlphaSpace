@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="GAS.API\Controllers\" />
+    <Folder Include="GAS.API\Middleware\" />
+    <Folder Include="GAS.Application\Interfaces\" />
+    <Folder Include="GAS.Application\DTOs\" />
+    <Folder Include="GAS.Application\Mapping\" />
+    <Folder Include="GAS.Application\Exceptions\" />
+    <Folder Include="GAS.Domain\Interfaces\" />
+    <Folder Include="GAS.Domain\Exceptions\" />
+    <Folder Include="GAS.Domain\Enums\" />
+    <Folder Include="GAS.Domain\Entities\" />
+    <Folder Include="GAS.Application\Services\" />
+    <Folder Include="GAS.Infrastucture\Data\" />
+    <Folder Include="GAS.Infrastucture\Migrations\" />
+    <Folder Include="GAS.Infrastucture\Identity\" />
+    <Folder Include="GAS.Infrastucture\Adapters\" />
+    <Folder Include="GAS.Infrastucture\Services\" />
+    <Folder Include="GAS.Infrastucture\Repositories\" />
+  </ItemGroup>
+
+</Project>
