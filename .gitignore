@@ -361,3 +361,86 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+# =====================================================
+# 🔐 Security & Sensitive Configuration
+# =====================================================
+
+# Environment variables
+.env
+.env.*
+.env.local
+.env.development.local
+.env.production.local
+
+# ASP.NET Core development config
+appsettings.Development.json
+appsettings.*.Development.json
+
+# User secrets
+secrets.json
+
+# Certificates / keys
+*.pfx
+*.pem
+*.key
+*.crt
+
+# Secret / credential files
+*.secret
+*.secrets
+credentials.json
+
+# =====================================================
+# 🤖 AI / Internal Development Files
+# =====================================================
+
+.opencode/
+AGENTS.md
+ARCHITECTURE_RULES.txt
+
+# If these might exist in subfolders
+**/AGENTS.md
+**/ARCHITECTURE_RULES.txt
+
+# =====================================================
+# 🧪 Local Dev / Tooling
+# =====================================================
+
+# Local database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# =====================================================
+# 📦 Frontend
+# =====================================================
+
+node_modules/
+dist/
+build/
+coverage/
+
+# Vite
+.vite/
+
+# Next.js
+.next/
+
+# =====================================================
+# 🧱 Temporary / Misc
+# =====================================================
+
+tmp/
+temp/
+*.tmp
