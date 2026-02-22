@@ -9,14 +9,23 @@ namespace GenAlplaSpaceFE
                 WebRootPath = "FrontEnd"
             });
 
+            builder.Services.AddRazorPages();
             var app = builder.Build();
 
-            //app.MapGet("/", () => "Hello World!");
-            app.UseDefaultFiles(new DefaultFilesOptions
+            if (!app.Environment.IsDevelopment())
             {
-                DefaultFileNames = new List<string> { "html/index.html" }
-            });
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+
             app.UseStaticFiles();
+
+            app.UseRouting();
+            app.UseAuthorization();
+            app.MapRazorPages();
+
             app.Run();
         }
     }

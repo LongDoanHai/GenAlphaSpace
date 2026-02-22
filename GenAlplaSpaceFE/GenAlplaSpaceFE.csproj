@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="FrontEnd\css\" />
-    <Folder Include="FrontEnd\js\" />
-    <Folder Include="FrontEnd\assets\" />
+    <Folder Include="FrontEnd\lib\" />
   </ItemGroup>
 
 </Project>
