@@ -22,12 +22,12 @@
     <Folder Include="GAS.Domain\Enums\" />
     <Folder Include="GAS.Domain\Entities\" />
     <Folder Include="GAS.Application\Services\" />
-    <Folder Include="GAS.Infrastucture\Data\" />
-    <Folder Include="GAS.Infrastucture\Migrations\" />
-    <Folder Include="GAS.Infrastucture\Identity\" />
-    <Folder Include="GAS.Infrastucture\Adapters\" />
-    <Folder Include="GAS.Infrastucture\Services\" />
-    <Folder Include="GAS.Infrastucture\Repositories\" />
+    <Folder Include="GAS.Infrastructure\Data\" />
+    <Folder Include="GAS.Infrastructure\Migrations\" />
+    <Folder Include="GAS.Infrastructure\Identity\" />
+    <Folder Include="GAS.Infrastructure\Adapters\" />
+    <Folder Include="GAS.Infrastructure\Services\" />
+    <Folder Include="GAS.Infrastructure\Repositories\" />
   </ItemGroup>
 
 </Project>
