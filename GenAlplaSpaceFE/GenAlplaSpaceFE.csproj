@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="FrontEnd\images\avatar\" />
+    <Folder Include="FrontEnd\images\placeholders\" />
     <Folder Include="FrontEnd\js\Modals\" />
     <Folder Include="FrontEnd\lib\" />
   </ItemGroup>
