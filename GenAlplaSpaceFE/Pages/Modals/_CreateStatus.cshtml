@@ -1,0 +1,61 @@
+﻿﻿<div class="hidden" id="create-status" uk-modal="">
+
+    <div class="uk-modal-dialog mx-auto bg-white shadow-2xl rounded-xl overflow-hidden" style="width: 520px !important; max-width: 95% !important;">
+        
+        <!-- Header -->
+        <div class="relative py-4 border-b border-gray-100 text-center">
+            <h1 class="text-lg font-bold text-gray-900">Create Status</h1>
+            <button type="button" class="absolute top-3 right-4 p-1.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-all uk-modal-close group">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-gray-500 group-hover:text-gray-700">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <form class="p-4" id="createStatusForm">
+            <!-- User Info -->
+            <div class="flex items-center gap-3 mb-4">
+                <img src="~/images/avatar/person.png" class="w-10 h-10 rounded-full border border-gray-100 shadow-sm" alt="Profile">
+                <span class="font-bold text-[16px] text-gray-900">Long Doan</span>
+            </div>
+
+            <!-- Content Area -->
+            <div class="min-h-[120px] mb-4">
+                <textarea class="w-full !text-gray-800 placeholder:text-gray-500 !text-lg !border-none focus:!ring-0 !bg-transparent resize-none overflow-y-auto"
+                          name="content"
+                          rows="4"
+                          placeholder="What's on your mind?"></textarea>
+                
+                <!-- Image Preview -->
+                <div id="imagePreviewContainer" class="hidden my-2 relative group rounded-lg overflow-hidden border border-gray-100">
+                    <img id="imagePreview" src="#" class="w-full max-h-[300px] object-cover" />
+                    <button type="button" class="absolute top-2 right-2 p-1.5 bg-white/90 hover:bg-white rounded-full shadow text-gray-600">
+                         <ion-icon name="close" class="text-base"></ion-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Accessory Bar -->
+            <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg mb-4 bg-white">
+                <span class="text-[15px] font-bold text-gray-800 ml-1">Add to your post</span>
+                <div class="flex items-center">
+                    <input id="imageUpload" type="file" class="hidden" name="uploadedContent" accept="image/png, image/jpeg" />
+                    <button type="button" id="imageUploadBtn" class="p-2 hover:bg-gray-100 rounded-md transition-all group" title="Photo/Video">
+                        <ion-icon name="images" class="text-2xl text-green-500"></ion-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <button type="submit" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-[15px] rounded-md shadow-sm transition-all disabled:bg-gray-200 disabled:text-gray-400">
+                Post
+            </button>
+        </form>
+
+    </div>
+
+</div>
+
+
+
+
