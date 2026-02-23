@@ -17,12 +17,8 @@
 	<partial name="Navigation/_TopBar" />
 	@* Side bar(left) *@
 	<partial name="Navigation/_SideBar" />
+	@RenderBody()
 
-		<main class="2xl:ml-[--w-side] xl:ml-[--w-side-sm] pt-[--m-top] transition-all duration-500">
-			<div class="max-w-[1060px] mx-auto p-2 lg:p-6">
-				@RenderBody()
-			</div>
-		</main>
 
 	</div>
 
