@@ -15,7 +15,7 @@ namespace GenAlphaSpace.GAS.Domain.Entities
         //Foreign key
         public int UserId { get; set; }
         //Navigation properties
-        public User User { get; set; }
+        public User User { get; set; } 
 
     }
 }

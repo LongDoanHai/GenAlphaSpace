@@ -22,20 +22,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="GAS.API\Controllers\" />
     <Folder Include="GAS.API\Middleware\" />
-    <Folder Include="GAS.Application\Interfaces\" />
-    <Folder Include="GAS.Application\DTOs\" />
     <Folder Include="GAS.Application\Mapping\" />
     <Folder Include="GAS.Application\Exceptions\" />
-    <Folder Include="GAS.Domain\Interfaces\" />
     <Folder Include="GAS.Domain\Exceptions\" />
     <Folder Include="GAS.Domain\Enums\" />
-    <Folder Include="GAS.Application\Services\" />
     <Folder Include="GAS.Infrastructure\Identity\" />
     <Folder Include="GAS.Infrastructure\Adapters\" />
     <Folder Include="GAS.Infrastructure\Services\" />
-    <Folder Include="GAS.Infrastructure\Repositories\" />
   </ItemGroup>
 
 </Project>

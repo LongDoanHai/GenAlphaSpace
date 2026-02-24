@@ -1,4 +1,8 @@
+using GenAlphaSpace.GAS.Application.Interfaces;
+using GenAlphaSpace.GAS.Application.Services;
+using GenAlphaSpace.GAS.Domain.Interfaces;
 using GenAlphaSpace.GAS.Infrastructure.Persistence;
+using GenAlphaSpace.GAS.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace GenAlphaSpace.GAS.API
@@ -15,12 +19,31 @@ namespace GenAlphaSpace.GAS.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            
+            // CORS Policy to allow frontend to fetch data
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin()
+                              .AllowAnyMethod()
+                              .AllowAnyHeader();
+                    });
+            });
+
             //Database
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(
             builder.Configuration.GetConnectionString("DefaultConnection")));
+            //DI
+            builder.Services.AddScoped<IPostRepository, PostRepository>();
+            builder.Services.AddScoped<IPostService, PostService>();
 
             var app = builder.Build();
+
+            // Enable CORS before other middleware
+            app.UseCors("AllowFrontend");
 
             //Seed the database with initial data
             using (var scope = app.Services.CreateScope()) 
@@ -29,7 +52,7 @@ namespace GenAlphaSpace.GAS.API
                 await dbContext.Database.MigrateAsync();
                 await DbInitializer.SeedAsync(dbContext);
             }
-
+            
 
                 // Configure the HTTP request pipeline.
                 if (app.Environment.IsDevelopment())
