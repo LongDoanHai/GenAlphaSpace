@@ -62,6 +62,7 @@ namespace GenAlphaSpace.GAS.API
                 }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseAuthorization();
 

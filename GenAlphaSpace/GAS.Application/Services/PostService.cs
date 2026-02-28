@@ -1,24 +1,48 @@
-﻿using GenAlphaSpace.GAS.Application.DTOs.Post;
+﻿using System.IO;
+using GenAlphaSpace.GAS.Application.DTOs.Post;
 using GenAlphaSpace.GAS.Application.Interfaces;
 using GenAlphaSpace.GAS.Domain.Entities;
 using GenAlphaSpace.GAS.Domain.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 
 namespace GenAlphaSpace.GAS.Application.Services
 {
     public class PostService : IPostService
     {
         private readonly IPostRepository _postRepository;
-        public PostService(IPostRepository postRepository)
+        private readonly IWebHostEnvironment _environment;
+        public PostService(IPostRepository postRepository, IWebHostEnvironment environment)
         {
-               _postRepository = postRepository;
+            _postRepository = postRepository;
+            _environment = environment;
         }
 
         public async Task<PostDto> CreatePostAsync(CreatePostDto createPostDto)
         {
+            string? fileUrl = null;
+            if (createPostDto.ImageFile != null && createPostDto.ImageFile.Length > 0)
+            {
+                var webRoot = _environment.WebRootPath ?? Path.Combine(_environment.ContentRootPath, "wwwroot");
+                var uploadDir = Path.Combine(webRoot, "uploads", "posts");
+                
+                if (!Directory.Exists(uploadDir))
+                    Directory.CreateDirectory(uploadDir);
+
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(createPostDto.ImageFile.FileName);
+                var filePath = Path.Combine(uploadDir, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await createPostDto.ImageFile.CopyToAsync(stream);
+                }
+
+                fileUrl = $"/uploads/posts/{fileName}";
+            }
+
             var post = new Post
             {
                 Content = createPostDto.Content,
-                ImageUrl = createPostDto.ImageUrl,
+                ImageUrl = fileUrl,
                 NumsOfReports = 0,
                 DateCreated = DateTime.Now,
                 DateUpdated = DateTime.Now,
@@ -27,6 +51,7 @@ namespace GenAlphaSpace.GAS.Application.Services
             var createdPost = await _postRepository.CreateAsync(post);
             return new PostDto
             {
+                Id = createdPost.Id,
                 Content = createdPost.Content,
                 ImageUrl = createdPost.ImageUrl,
                 DateCreated = createdPost.DateCreated,

@@ -20,7 +20,7 @@ namespace GenAlphaSpace.GAS.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePost([FromBody] CreatePostDto dto) 
+        public async Task<IActionResult> CreatePost([FromForm] CreatePostDto dto) 
         {
             var createdPost = await _postService.CreatePostAsync(dto);
             return CreatedAtAction(nameof(GetAllPosts), new { id = createdPost.Id }, createdPost);

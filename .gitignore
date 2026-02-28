@@ -444,3 +444,5 @@ coverage/
 tmp/
 temp/
 *.tmp
+# Ignore uploaded images
+wwwroot/uploads/

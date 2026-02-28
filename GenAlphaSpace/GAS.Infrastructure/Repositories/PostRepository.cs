@@ -23,6 +23,7 @@ namespace GenAlphaSpace.GAS.Infrastructure.Repositories
         {
             return await _context.Posts
                 .Include(p => p.User)
+                .OrderByDescending(p => p.DateCreated)
                 .ToListAsync();
         }
     }

@@ -36,8 +36,7 @@ function renderPosts(posts) {
         postContainer.appendChild(postElement);
     });
 
-    // CRITICAL: Re-initialize UIkit components for dynamically added content 
-    // This makes the 3 dots dropdown work!
+
     if (typeof UIkit !== 'undefined') {
         UIkit.update();
     }
@@ -47,22 +46,25 @@ function createPostElement(post) {
     const div = document.createElement('div');
     div.className = 'bg-white rounded-xl shadow-sm text-sm font-medium border1';
     
-    // Format date
     const date = new Date(post.dateCreated);
     const timeAgo = formatTimeAgo(date);
 
-    // Full date for tooltip (DD/MM/YYYY time)
+
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
     const fullTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
     const fullDate = `${day}/${month}/${year} ${fullTime}`;
 
-    // Image logic - only add the image element if there's a valid URL
     let imageHtml = '';
     if (post.imageUrl && post.imageUrl.trim() !== '' && post.imageUrl !== 'string') {
         let imgSrc = post.imageUrl;
-        // Fix for unsplash links that are HTML pages, not direct image files
+        
+        // Fix: If it's a relative path from the backend server, prepend the API's base URL
+        if (imgSrc.startsWith('/uploads/')) {
+            imgSrc = `https://localhost:7274${imgSrc}`;
+        }
+        
         if (imgSrc.includes('unsplash.com') && !imgSrc.includes('images.unsplash.com')) {
             const id = imgSrc.split('/').pop();
             imgSrc = `https://source.unsplash.com/${id}/800x600`;
@@ -190,5 +192,106 @@ function formatTimeAgo(date) {
     return `${day}/${month}/${year} at ${timeStr}`;
 }
 
-// Ensure UIkit components are initialized for statically added content if not using React/Vue
-document.addEventListener('DOMContentLoaded', fetchPosts);
+document.addEventListener('DOMContentLoaded', () => {
+    fetchPosts();
+    initializeCreateStatus();
+});
+
+function initializeCreateStatus() {
+    const form = document.getElementById('createStatusForm');
+    const imageUpload = document.getElementById('imageUpload');
+    const imageUploadBtn = document.getElementById('imageUploadBtn');
+    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+    const imagePreview = document.getElementById('imagePreview');
+    const removeImageBtn = document.getElementById('removeImageBtn');
+
+    if (!form) return;
+
+ 
+    if (imageUploadBtn && imageUpload) {
+        imageUploadBtn.addEventListener('click', () => {
+            imageUpload.click();
+        });
+    }
+
+
+    if (imageUpload) {
+        imageUpload.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (imagePreview) imagePreview.src = e.target.result;
+                    if (imagePreviewContainer) imagePreviewContainer.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+  
+    if (removeImageBtn) {
+        removeImageBtn.addEventListener('click', () => {
+            if (imageUpload) imageUpload.value = '';
+            if (imagePreviewContainer) imagePreviewContainer.classList.add('hidden');
+            if (imagePreview) imagePreview.src = '#';
+        });
+    }
+
+    
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const content = form.querySelector('textarea[name="content"]').value;
+        
+        if (!content.trim()) {
+            alert('Please enter some content');
+            return;
+        }
+
+      
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Posting...';
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('content', content);
+            formData.append('userId', 1);
+            
+            if (imageUpload && imageUpload.files[0]) {
+                formData.append('imageFile', imageUpload.files[0]);
+            }
+
+            const response = await fetch('https://localhost:7274/api/posts', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create post');
+            }
+
+            form.reset();
+            if (imagePreviewContainer) imagePreviewContainer.classList.add('hidden');
+            
+            if (typeof UIkit !== 'undefined') {
+                UIkit.modal('#create-status').hide();
+            }
+
+            await fetchPosts();
+
+        } catch (error) {
+            console.error('Error creating post:', error);
+            alert('Error creating post. Please try again.');
+        } finally {
+            // Re-enable button
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Post';
+            }
+        }
+    });
+}
