@@ -23,8 +23,22 @@ namespace GenAlphaSpace.GAS.Infrastructure.Repositories
         {
             return await _context.Posts
                 .Include(p => p.User)
+                .Include(p => p.Likes)
                 .OrderByDescending(p => p.DateCreated)
                 .ToListAsync();
+        }
+
+        public async Task<Post?> GetByPostId(int postId)
+        {
+            return await _context.Posts
+                .Include(p => p.User)
+                .Include(p => p.Likes)
+                .FirstOrDefaultAsync(p => p.Id == postId);
+        }
+
+        public async Task<bool> PostExistsAsync(int postId)
+        {
+            return await _context.Posts.AnyAsync(p => p.Id == postId);
         }
     }
 }

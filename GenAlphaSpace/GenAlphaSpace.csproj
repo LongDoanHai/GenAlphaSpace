@@ -25,7 +25,6 @@
     <Folder Include="GAS.API\Middleware\" />
     <Folder Include="GAS.Application\Mapping\" />
     <Folder Include="GAS.Application\Exceptions\" />
-    <Folder Include="GAS.Domain\Exceptions\" />
     <Folder Include="GAS.Domain\Enums\" />
     <Folder Include="GAS.Infrastructure\Identity\" />
     <Folder Include="GAS.Infrastructure\Adapters\" />

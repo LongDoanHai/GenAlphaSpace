@@ -39,6 +39,8 @@ namespace GenAlphaSpace.GAS.API
             //DI
             builder.Services.AddScoped<IPostRepository, PostRepository>();
             builder.Services.AddScoped<IPostService, PostService>();
+            builder.Services.AddScoped<ILikeRepository, LikeRepository>();
+            builder.Services.AddScoped<ILikeService, LikeService>();
 
             var app = builder.Build();
 
@@ -64,6 +66,7 @@ namespace GenAlphaSpace.GAS.API
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseCors("AllowFrontend");
             app.UseAuthorization();
 
 

@@ -7,6 +7,8 @@
         public string? ImageUrl { get; set; }
         public DateTime DateCreated { get; set; }
         public string UserName { get; set; } = string.Empty;
+        public int LikeCount { get; set; }
+        public bool IsLiked { get; set; }
 
     }
 }

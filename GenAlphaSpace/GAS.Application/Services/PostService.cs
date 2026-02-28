@@ -10,10 +10,12 @@ namespace GenAlphaSpace.GAS.Application.Services
     public class PostService : IPostService
     {
         private readonly IPostRepository _postRepository;
+        private readonly ILikeRepository _likeRepository;
         private readonly IWebHostEnvironment _environment;
-        public PostService(IPostRepository postRepository, IWebHostEnvironment environment)
+        public PostService(IPostRepository postRepository,ILikeRepository likeRepository, IWebHostEnvironment environment)
         {
             _postRepository = postRepository;
+            _likeRepository = likeRepository;
             _environment = environment;
         }
 
@@ -56,6 +58,8 @@ namespace GenAlphaSpace.GAS.Application.Services
                 ImageUrl = createdPost.ImageUrl,
                 DateCreated = createdPost.DateCreated,
                 UserName = createdPost.User?.Name ?? String.Empty,
+                LikeCount = 0,
+                IsLiked = false
             };
         }
 
@@ -68,8 +72,31 @@ namespace GenAlphaSpace.GAS.Application.Services
                 Content = p.Content,
                 ImageUrl = p.ImageUrl,
                 DateCreated = p.DateCreated,
-                UserName = p.User?.Name ?? String.Empty
+                UserName = p.User?.Name ?? String.Empty,
+                LikeCount = p.Likes.Count,
+                IsLiked = p.Likes.Any(l => l.Userid == 1)
             });
+        }
+        public async Task<PostDto> GetPostWithLikeCountAsync(int postId)
+        {
+            var post = await _postRepository.GetByPostId(postId);
+            if (post == null)
+            {
+                return null!;
+            }
+
+            var likeCount = await _likeRepository.GetLikeCountAsync(postId);
+
+            return new PostDto
+            {
+                Id = post.Id,
+                Content = post.Content,
+                ImageUrl = post.ImageUrl,
+                DateCreated = post.DateCreated,
+                UserName = post.User?.Name ?? String.Empty,
+                LikeCount = likeCount,
+                IsLiked = post.Likes.Any(l => l.Userid == 1)
+            };
         }
 
     }

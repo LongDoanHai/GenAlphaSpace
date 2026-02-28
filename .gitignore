@@ -445,4 +445,4 @@ tmp/
 temp/
 *.tmp
 # Ignore uploaded images
-wwwroot/uploads/
+GenAlphaSpace/wwwroot/uploads/
