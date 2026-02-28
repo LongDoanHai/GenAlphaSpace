@@ -7,27 +7,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.24" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.24">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.24" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.24">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="GAS.API\Controllers\" />
     <Folder Include="GAS.API\Middleware\" />
-    <Folder Include="GAS.Application\Interfaces\" />
-    <Folder Include="GAS.Application\DTOs\" />
     <Folder Include="GAS.Application\Mapping\" />
     <Folder Include="GAS.Application\Exceptions\" />
-    <Folder Include="GAS.Domain\Interfaces\" />
-    <Folder Include="GAS.Domain\Exceptions\" />
     <Folder Include="GAS.Domain\Enums\" />
-    <Folder Include="GAS.Domain\Entities\" />
-    <Folder Include="GAS.Application\Services\" />
-    <Folder Include="GAS.Infrastructure\Data\" />
-    <Folder Include="GAS.Infrastructure\Migrations\" />
     <Folder Include="GAS.Infrastructure\Identity\" />
     <Folder Include="GAS.Infrastructure\Adapters\" />
     <Folder Include="GAS.Infrastructure\Services\" />
-    <Folder Include="GAS.Infrastructure\Repositories\" />
   </ItemGroup>
 
 </Project>
