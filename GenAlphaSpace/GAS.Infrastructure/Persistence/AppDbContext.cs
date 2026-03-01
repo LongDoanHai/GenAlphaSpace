@@ -52,7 +52,7 @@ namespace GenAlphaSpace.GAS.Infrastructure.Persistence
 
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.Post)
-                .WithMany()
+                .WithMany(p => p.Comments)
                 .HasForeignKey(c => c.PostId)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -70,6 +70,16 @@ namespace GenAlphaSpace.GAS.Infrastructure.Persistence
                 .WithMany(u => u.CommentLikes)
                 .HasForeignKey(cl => cl.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Comment>()
+                .HasIndex(c => new { c.PostId, c.ParentCommentId, c.Id })
+                .HasDatabaseName("IX_Comments_PostId_ParentCommentId_Id");
+            modelBuilder.Entity<Comment>()
+                .HasIndex(c => c.ParentCommentId)
+                .HasDatabaseName("IX_Comments_ParentCommentId");
+            modelBuilder.Entity<CommentLike>()
+                .HasIndex(cl => new { cl.UserId, cl.CommentId })
+                .HasDatabaseName("IX_CommentLikes_UserId_CommentId");
 
             base.OnModelCreating(modelBuilder);
         }

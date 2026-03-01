@@ -42,5 +42,11 @@ namespace GenAlphaSpace.GAS.API.Controllers
             return CreatedAtAction(nameof(GetAllPosts), new { id = createdPost.Id }, createdPost);
         }
 
+        [HttpGet("{postId}/comment-count")]
+        public async Task<IActionResult> GetPostCommentCount(int postId)
+        {
+            var count = await _postService.GetPostCommentCountAsync(postId);
+            return Ok(count);
+        }
     }
 }

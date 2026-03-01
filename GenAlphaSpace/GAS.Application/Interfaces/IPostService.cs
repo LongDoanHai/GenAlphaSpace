@@ -6,5 +6,6 @@ namespace GenAlphaSpace.GAS.Application.Interfaces
         Task<IEnumerable<PostDto>> GetAllPostsAsync();
         Task<PostDto> CreatePostAsync(CreatePostDto createPostDto);
         Task<PostDto> GetPostWithLikeCountAsync(int postId);
+        Task<int> GetPostCommentCountAsync(int postId);
     }
 }

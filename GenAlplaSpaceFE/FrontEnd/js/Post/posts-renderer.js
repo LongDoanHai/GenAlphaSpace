@@ -1,5 +1,11 @@
 // Rendering layer for Posts functionality
 const PostsRenderer = {
+    _postsCache: new Map(),
+
+    getPost(id) {
+        return this._postsCache.get(id);
+    },
+
     createPostElement(post) {
         const div = document.createElement('div');
         div.className = 'bg-white rounded-xl shadow-sm text-sm font-medium border1';
@@ -69,10 +75,10 @@ const PostsRenderer = {
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <button class="button-icon">
+                    <button class="button-icon open-comment-modal" data-post-id="${post.id}">
                         <ion-icon class="text-lg" name="chatbubble-ellipses-outline"></ion-icon>
                     </button>
-                    <a href="#">0</a>
+                    <a href="#" class="open-comment-modal" data-post-id="${post.id}">${post.commentCount || 0}</a>
                 </div>
 
                 <div class="ml-auto"></div>
@@ -87,16 +93,17 @@ const PostsRenderer = {
             <!-- Comment section -->
             <div>
                 <div class="sm:px-4 sm:py-3 p-2.5 border-t border-gray-100 flex items-center gap-1">
-                    <img src="/images/avatar/person.png" class="w-6 h-6 rounded-full" />
+                    <img src="/images/avatar/person.png" class="w-6 h-6 rounded-full shrink-0" />
                     <div class="flex-1 relative overflow-hidden h-10">
                         <textarea placeholder="Add Comment...." rows="1" 
-                                  class="w-full resize-none !bg-transparent px-4 py-2 focus:!border-transparent focus:!ring-transparent"></textarea>
+                                  class="w-full resize-none !bg-transparent px-4 py-2 focus:!border-transparent focus:!ring-transparent quick-comment-input"></textarea>
                     </div>
-                    <button class="text-sm rounded-full py-1.5 px-3.5 bg-secondery">Comment</button>
+                    <button class="text-sm rounded-full py-1.5 px-3.5 bg-secondery btn-quick-comment font-semibold" data-post-id="${post.id}">Comment</button>
                 </div>
             </div>
         `;
     },
+
 
     _buildImageHtml(imageUrl) {
         if (!imageUrl || imageUrl.trim() === '' || imageUrl === 'string') {
@@ -129,6 +136,7 @@ const PostsRenderer = {
         if (!postContainer) return;
         
         postContainer.innerHTML = '';
+        this._postsCache.clear();
         
         if (posts.length === 0) {
             postContainer.innerHTML = 
@@ -137,6 +145,7 @@ const PostsRenderer = {
         }
         
         posts.forEach(post => {
+            this._postsCache.set(post.id, post);
             const postElement = this.createPostElement(post);
             postContainer.appendChild(postElement);
         });

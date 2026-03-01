@@ -1,0 +1,65 @@
+<!-- Comment Modal -->
+<div id="comment-modal" class="uk-flex-top" uk-modal>
+    <!-- Same width as Create Status modal: 520px -->
+    <div class="uk-modal-dialog rounded-2xl shadow-2xl p-0 flex flex-col !h-[85vh] !max-h-[85vh] bg-white mx-auto relative overflow-hidden" 
+         style="height: 85vh !important; max-height: 85vh !important; width: 520px !important; max-width: 95% !important; margin-top: 7.5vh;">
+        
+        <!-- Header: Fixed height -->
+        <div class="px-6 py-4 border-b flex justify-between items-center bg-white z-20 shrink-0 h-[64px]">
+            <h2 class="text-xl font-extrabold text-gray-900 tracking-tight">Comments</h2>
+            <button class="uk-modal-close-default p-2 hover:bg-gray-100 rounded-full cursor-pointer transition-all duration-200" type="button" uk-close></button>
+        </div>
+        
+        <!-- Scrollable Area: Fills remaining space -->
+        <div class="flex-1 overflow-y-auto custom-scrollbar bg-gray-50/20 min-h-0 overflow-x-hidden" id="comment-modal-scroll-area">
+            
+            <!-- Loading Spinner -->
+            <div id="comment-loading" class="flex justify-center p-12 hidden">
+                <div class="w-10 h-10 rounded-full animate-spin border-[3px] border-blue-500 border-t-transparent shadow-sm"></div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="comment-empty-state" class="hidden flex flex-col items-center justify-center p-16 text-center">
+                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm border border-gray-50">
+                    <ion-icon name="chatbubble-ellipses-outline" class="text-5xl text-gray-200"></ion-icon>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900">No comments yet</h3>
+                <p class="text-gray-500 text-sm max-w-[220px] leading-relaxed">Be the first to share your thoughts on this post!</p>
+            </div>
+
+            <!-- Comments List -->
+            <div id="modal-comments-list" class="p-6 space-y-8">
+                <!-- Comments injected via JS -->
+            </div>
+
+            <!-- Load More Container -->
+            <div id="load-more-comments-container" class="hidden flex justify-center pb-12">
+                <button id="btn-load-more-comments" class="px-8 py-2.5 bg-white border border-gray-200 rounded-full text-[13px] font-bold text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm active:scale-95">
+                    View more comments
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer: Fixed height at bottom -->
+        <div class="p-5 border-t bg-white z-20 shrink-0 shadow-[0_-8px_30px_rgb(0,0,0,0.04)] h-[88px] flex items-center">
+            <div class="flex items-center gap-4 w-full">
+                <div class="w-10 h-10 rounded-full overflow-hidden border border-gray-100 shadow-sm shrink-0">
+                    <img src="/images/avatar/person.png" class="w-full h-full object-cover" onerror="this.src='/images/avatar/person.png'">
+                </div>
+                <div class="flex-1 flex items-center gap-2">
+                    <div class="flex-1 bg-gray-50 rounded-2xl relative border border-gray-100 transition-all focus-within:bg-white focus-within:border-blue-200">
+                        <textarea id="root-comment-input" 
+                                  class="w-full !bg-transparent !border-none focus:!ring-0 resize-none text-[15px] pt-3 pb-3 px-4 placeholder:text-gray-400"
+                                  placeholder="Add a comment..."
+                                  rows="1"
+                                  style="max-height: 48px; min-height: 48px;"></textarea>
+                    </div>
+                    <button id="btn-send-root-comment" 
+                            class="rounded-full py-2 px-4 bg-gray-100 text-gray-800 font-bold text-sm hover:bg-gray-200 transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed whitespace-nowrap">
+                        Comment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

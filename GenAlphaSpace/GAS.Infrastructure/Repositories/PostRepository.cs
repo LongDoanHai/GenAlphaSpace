@@ -24,6 +24,7 @@ namespace GenAlphaSpace.GAS.Infrastructure.Repositories
             return await _context.Posts
                 .Include(p => p.User)
                 .Include(p => p.Likes)
+                .Include(p => p.Comments)
                 .OrderByDescending(p => p.DateCreated)
                 .ToListAsync();
         }
@@ -33,12 +34,18 @@ namespace GenAlphaSpace.GAS.Infrastructure.Repositories
             return await _context.Posts
                 .Include(p => p.User)
                 .Include(p => p.Likes)
+                .Include(p => p.Comments)
                 .FirstOrDefaultAsync(p => p.Id == postId);
         }
 
         public async Task<bool> PostExistsAsync(int postId)
         {
             return await _context.Posts.AnyAsync(p => p.Id == postId);
+        }
+        public async Task<int> GetCommentCountAsync(int postId)
+        {
+            return await _context.Comments
+                .CountAsync(c => c.PostId == postId);
         }
     }
 }

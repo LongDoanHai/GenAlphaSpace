@@ -41,6 +41,9 @@ namespace GenAlphaSpace.GAS.API
             builder.Services.AddScoped<IPostService, PostService>();
             builder.Services.AddScoped<ILikeRepository, LikeRepository>();
             builder.Services.AddScoped<ILikeService, LikeService>();
+            builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
+            builder.Services.AddHttpContextAccessor();
 
             var app = builder.Build();
 

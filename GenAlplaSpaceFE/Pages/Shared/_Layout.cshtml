@@ -41,6 +41,15 @@
     <script src="~/js/Post/posts-handlers.js"></script>
     <script src="~/js/Post/posts.js"></script>
 
+    @* Comments module *@
+    <script src="~/js/Comment/comments-api.js"></script>
+    <script src="~/js/Comment/comments-state.js"></script>
+    <script src="~/js/Comment/comments-renderer.js"></script>
+    <script src="~/js/Comment/comments-handlers.js"></script>
+    <script src="~/js/Comment/comments.js"></script>
+
+    <partial name="Modals/_CommentModal" />
+
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
