@@ -106,6 +106,22 @@ const CommentsState = {
             const idx = val.replyIds.indexOf(oldId);
             if(idx > -1) val.replyIds[idx] = newComment.id;
         }
+    },
+
+    removeComment(commentId) {
+        this.byId.delete(commentId);
+        
+        // Remove from all post root lists
+        for (const [key, val] of this.byPost.entries()) {
+            const idx = val.rootIds.indexOf(commentId);
+            if (idx > -1) val.rootIds.splice(idx, 1);
+        }
+        
+        // Remove from all parent reply lists
+        for (const [key, val] of this.byParent.entries()) {
+            const idx = val.replyIds.indexOf(commentId);
+            if (idx > -1) val.replyIds.splice(idx, 1);
+        }
     }
 };
 

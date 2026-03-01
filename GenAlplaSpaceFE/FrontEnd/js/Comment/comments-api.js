@@ -34,6 +34,19 @@ const CommentsAPI = {
         const response = await fetch(`${this.API_BASE}/${commentId}/like`, { method: 'POST' });
         if (!response.ok) throw new Error('Failed to toggle comment like');
         return response.json();
+    },
+
+    async deleteComment(commentId) {
+        const response = await fetch(`${this.API_BASE}/${commentId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        if (!response.ok) {
+            if (response.status === 404) throw new Error('Comment not found');
+            if (response.status === 403) throw new Error('You can only delete your own comments');
+            throw new Error('Failed to delete comment');
+        }
+        return true;
     }
 };
 

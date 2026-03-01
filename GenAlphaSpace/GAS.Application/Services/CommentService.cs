@@ -1,9 +1,10 @@
-﻿using GenAlphaSpace.GAS.Application.DTOs.Comment;
+using GenAlphaSpace.GAS.Application.DTOs.Comment;
 using GenAlphaSpace.GAS.Application.Interfaces;
 using GenAlphaSpace.GAS.Domain.Entities;
 using GenAlphaSpace.GAS.Domain.Exceptions;
 using GenAlphaSpace.GAS.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 namespace GenAlphaSpace.GAS.Application.Services
 {
     public class CommentService : ICommentService
@@ -129,6 +130,23 @@ namespace GenAlphaSpace.GAS.Application.Services
         public async Task<int> GetCommentLikeCountAsync(int commentId)
         {
             return await _commentRepository.GetCommentLikeCountAsync(commentId);
+        }
+
+        public async Task<bool> DeleteCommentAsync(int commentId, int currentUserId)
+        {
+            var comment = await _commentRepository.GetCommentByIdAsync(commentId);
+            if (comment == null)
+            {
+                throw new CommentNotFoundException(commentId);
+            }
+
+            // Verify user owns the comment
+            if (comment.UserId != currentUserId)
+            {
+                throw new UnauthorizedAccessException("You can only delete your own comments");
+            }
+
+            return await _commentRepository.SoftDeleteCommentAsync(commentId, currentUserId);
         }
 
         private async Task<CommentDto> MapToCommentDtoAsync(Comment comment, int currentUserId)

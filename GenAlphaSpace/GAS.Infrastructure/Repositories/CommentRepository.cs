@@ -1,4 +1,4 @@
-﻿using GenAlphaSpace.GAS.Domain.Entities;
+using GenAlphaSpace.GAS.Domain.Entities;
 using GenAlphaSpace.GAS.Domain.Interfaces;
 using GenAlphaSpace.GAS.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +15,7 @@ namespace GenAlphaSpace.GAS.Infrastructure.Repositories
         public async Task<IEnumerable<Comment>> GetRootCommentsAsync(int postId, int? cursor, int limit)
         {
             var query = _context.Comments
-                .Where(c => c.PostId == postId && c.ParentCommentId == null)
+                .Where(c => c.PostId == postId && c.ParentCommentId == null && !c.IsDeleted)
                 .Include(c => c.User)
                 .AsQueryable();
 
@@ -33,7 +33,7 @@ namespace GenAlphaSpace.GAS.Infrastructure.Repositories
         public async Task<IEnumerable<Comment>> GetRepliesAsync(int parentCommentId, int? cursor, int limit)
         {
             var query = _context.Comments
-                .Where(c => c.ParentCommentId == parentCommentId)
+                .Where(c => c.ParentCommentId == parentCommentId && !c.IsDeleted)
                 .Include(c => c.User)
                 .AsQueryable();
 
@@ -107,7 +107,7 @@ namespace GenAlphaSpace.GAS.Infrastructure.Repositories
         public async Task<int> GetReplyCountAsync(int parentCommentId)
         {
             return await _context.Comments
-                .CountAsync(c => c.ParentCommentId == parentCommentId);
+                .CountAsync(c => c.ParentCommentId == parentCommentId && !c.IsDeleted);
         }
         public async Task<bool> UserHasLikedCommentAsync(int commentId, int userId)
         {
@@ -140,12 +140,12 @@ namespace GenAlphaSpace.GAS.Infrastructure.Repositories
         {
             return await _context.Comments
                 .Include(c => c.User)
-                .FirstOrDefaultAsync(c => c.Id == commentId);
+                .FirstOrDefaultAsync(c => c.Id == commentId && !c.IsDeleted);
         }
         public async Task<int> GetCommentCountAsync(int postId)
         {
             return await _context.Comments
-                .CountAsync(c => c.PostId == postId);
+                .CountAsync(c => c.PostId == postId && !c.IsDeleted);
         }
         public async Task<CommentLike?> GetUserLikeAsync(int commentId, int userId)
         {
@@ -176,6 +176,19 @@ namespace GenAlphaSpace.GAS.Infrastructure.Repositories
         {
             _context.Comments.Update(comment);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> SoftDeleteCommentAsync(int commentId, int deletedBy)
+        {
+            var comment = await _context.Comments.FindAsync(commentId);
+            if (comment == null) return false;
+            
+            comment.IsDeleted = true;
+            comment.DeletedAt = DateTime.Now;
+            comment.DeletedBy = deletedBy;
+            
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

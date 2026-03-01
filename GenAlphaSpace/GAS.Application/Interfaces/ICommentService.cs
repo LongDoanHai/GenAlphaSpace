@@ -1,4 +1,4 @@
-﻿using GenAlphaSpace.GAS.Application.DTOs.Comment;
+using GenAlphaSpace.GAS.Application.DTOs.Comment;
 
 namespace GenAlphaSpace.GAS.Application.Interfaces
 {
@@ -10,6 +10,7 @@ namespace GenAlphaSpace.GAS.Application.Interfaces
         Task<CommentPagedResult<CommentDto>> GetCommentRepliesAsync(int parentId, int? cursor, int limit, int currentUserId);
         Task<CommentLikeDto> ToggleCommentLikeAsync(int commentId, int userId);
         Task<int> GetCommentLikeCountAsync(int commentId);
+        Task<bool> DeleteCommentAsync(int commentId, int currentUserId);
     }
 }
 

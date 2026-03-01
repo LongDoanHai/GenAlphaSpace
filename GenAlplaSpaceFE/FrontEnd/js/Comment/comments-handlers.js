@@ -54,6 +54,12 @@ const CommentsHandlers = {
                  this.handleLoadReplies(parseInt(loadMoreRepliesBtn.dataset.id), true);
                  return;
             }
+
+            const deleteBtn = e.target.closest('.btn-delete-comment');
+            if(deleteBtn) {
+                this.handleDeleteComment(parseInt(deleteBtn.dataset.id));
+                return;
+            }
         });
 
         const loadMoreRootBtn = document.getElementById('btn-load-more-comments');
@@ -231,8 +237,28 @@ const CommentsHandlers = {
             CommentsState.replaceTempId(tempId, realComment);
             CommentsRenderer.renderCommentTree(postId, 'modal-comments-list');
         } catch (e) {
-            console.error(e);
+            console.error('Failed to post reply', e);
             alert('Failed to post reply');
+        }
+    },
+
+    async handleDeleteComment(commentId) {
+        if(!confirm('Are you sure you want to delete this comment?')) return;
+
+        try {
+            // Optimistically remove from state
+            CommentsState.removeComment(commentId);
+            CommentsRenderer.renderCommentTree(CommentsState.currentPostId, 'modal-comments-list');
+
+            // Call API
+            await CommentsAPI.deleteComment(commentId);
+        } catch (error) {
+            console.error('Failed to delete comment:', error);
+            alert(error.message || 'Failed to delete comment');
+            // Reload to restore state on error
+            if(CommentsState.currentPostId) {
+                await this.handleLoadRootComments(CommentsState.currentPostId, false);
+            }
         }
     }
 };

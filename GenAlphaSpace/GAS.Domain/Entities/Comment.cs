@@ -1,4 +1,4 @@
-﻿namespace GenAlphaSpace.GAS.Domain.Entities
+namespace GenAlphaSpace.GAS.Domain.Entities
 {
     public class Comment
     {
@@ -26,6 +26,10 @@
         public int ReplyCount { get; set; }
 
         public ICollection<CommentLike> CommentLikes { get; set; } = new List<CommentLike>();
-    }
 
+        // Soft delete fields
+        public bool IsDeleted { get; set; } = false;
+        public DateTime? DeletedAt { get; set; }
+        public int? DeletedBy { get; set; }
+    }
 }

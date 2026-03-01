@@ -1,4 +1,4 @@
-﻿using GenAlphaSpace.GAS.Domain.Entities;
+using GenAlphaSpace.GAS.Domain.Entities;
 namespace GenAlphaSpace.GAS.Domain.Interfaces
 {
     public interface ICommentRepository
@@ -19,6 +19,7 @@ namespace GenAlphaSpace.GAS.Domain.Interfaces
         Task RemoveCommentLikeAsync(int commentId, int userId);
         Task AddCommentLikeAsync(int commentId, int userId);
         Task UpdateCommentAsync(Comment comment);
+        Task<bool> SoftDeleteCommentAsync(int commentId, int deletedBy);
     }
 }
 

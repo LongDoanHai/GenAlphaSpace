@@ -1,5 +1,6 @@
-﻿using GenAlphaSpace.GAS.Application.DTOs.Comment;
+using GenAlphaSpace.GAS.Application.DTOs.Comment;
 using GenAlphaSpace.GAS.Application.Interfaces;
+using GenAlphaSpace.GAS.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 namespace GenAlphaSpace.GAS.API.Controllers
 {
@@ -72,6 +73,26 @@ namespace GenAlphaSpace.GAS.API.Controllers
         {
             var count = await _commentService.GetCommentLikeCountAsync(commentId);
             return Ok(count);
+        }
+
+        [HttpDelete("{commentId}")]
+        public async Task<IActionResult> DeleteComment(int commentId)
+        {
+            var currentUserId = GetCurrentUserId();
+            try
+            {
+                var result = await _commentService.DeleteCommentAsync(commentId, currentUserId);
+                if (!result) return NotFound();
+                return NoContent();
+            }
+            catch (CommentNotFoundException)
+            {
+                return NotFound(new { message = "Comment not found" });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Forbid(ex.Message);
+            }
         }
     }
 }

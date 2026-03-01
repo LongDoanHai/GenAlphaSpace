@@ -99,11 +99,16 @@ const CommentsRenderer = {
                     <button class="btn-like-comment ${likeColor} transition-all flex items-center gap-1.5 active:scale-125" data-id="${comment.id}">
                         <ion-icon name="${likeIcon}" class="text-sm"></ion-icon> <span>${comment.likeCount || ''}</span>
                     </button>
-                    ${!isPosting ? `
-                    <button class="btn-reply-comment text-gray-400 hover:text-blue-500 transition-colors" data-id="${comment.id}">
-                        Reply
-                    </button>
-                    ` : '<span class="text-gray-300 italic">Posting...</span>'}
+                     ${!isPosting ? `
+                     <button class="btn-reply-comment text-gray-400 hover:text-blue-500 transition-colors" data-id="${comment.id}">
+                         Reply
+                     </button>
+                     ${comment.userId === 1 ? `
+                     <button class="btn-delete-comment text-gray-400 hover:text-red-500 transition-colors ml-2" data-id="${comment.id}">
+                         Delete
+                     </button>
+                     ` : ''}
+                     ` : '<span class="text-gray-300 italic">Posting...</span>'}
                 </div>
 
                 <div class="reply-input-area hidden mt-3 flex items-center gap-2 w-full pr-4 animate-slide-down" id="reply-box-${comment.id}">
