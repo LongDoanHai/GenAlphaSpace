@@ -12,11 +12,16 @@ namespace GenAlphaSpace.GAS.Application.Services
         private readonly IPostRepository _postRepository;
         private readonly ILikeRepository _likeRepository;
         private readonly IWebHostEnvironment _environment;
-        public PostService(IPostRepository postRepository,ILikeRepository likeRepository, IWebHostEnvironment environment)
+        private readonly ICommentRepository _commentRepository;
+        public PostService(IPostRepository postRepository,
+                           ILikeRepository likeRepository, 
+                           IWebHostEnvironment environment,
+                           ICommentRepository commentRepository)
         {
             _postRepository = postRepository;
             _likeRepository = likeRepository;
             _environment = environment;
+            _commentRepository = commentRepository;
         }
 
         public async Task<PostDto> CreatePostAsync(CreatePostDto createPostDto)
@@ -59,7 +64,8 @@ namespace GenAlphaSpace.GAS.Application.Services
                 DateCreated = createdPost.DateCreated,
                 UserName = createdPost.User?.Name ?? String.Empty,
                 LikeCount = 0,
-                IsLiked = false
+                IsLiked = false,
+                CommentCount = 0
             };
         }
 
@@ -74,7 +80,8 @@ namespace GenAlphaSpace.GAS.Application.Services
                 DateCreated = p.DateCreated,
                 UserName = p.User?.Name ?? String.Empty,
                 LikeCount = p.Likes.Count,
-                IsLiked = p.Likes.Any(l => l.Userid == 1)
+                IsLiked = p.Likes.Any(l => l.Userid == 1),
+                CommentCount = p.Comments.Count
             });
         }
         public async Task<PostDto> GetPostWithLikeCountAsync(int postId)
@@ -95,8 +102,13 @@ namespace GenAlphaSpace.GAS.Application.Services
                 DateCreated = post.DateCreated,
                 UserName = post.User?.Name ?? String.Empty,
                 LikeCount = likeCount,
-                IsLiked = post.Likes.Any(l => l.Userid == 1)
+                IsLiked = post.Likes.Any(l => l.Userid == 1),
+                CommentCount = post.Comments.Count
             };
+        }
+        public async Task<int> GetPostCommentCountAsync(int postId)
+        {
+            return await _commentRepository.GetCommentCountAsync(postId);
         }
 
     }

@@ -4,6 +4,7 @@ using GenAlphaSpace.GAS.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GenAlphaSpace.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260228095436_AddCommentRepliesAndLikes")]
+    partial class AddCommentRepliesAndLikes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,15 +66,13 @@ namespace GenAlphaSpace.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentCommentId")
-                        .HasDatabaseName("IX_Comments_ParentCommentId");
+                    b.HasIndex("ParentCommentId");
+
+                    b.HasIndex("PostId");
 
                     b.HasIndex("PostId1");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("PostId", "ParentCommentId", "Id")
-                        .HasDatabaseName("IX_Comments_PostId_ParentCommentId_Id");
 
                     b.ToTable("Comments");
                 });
@@ -89,8 +90,7 @@ namespace GenAlphaSpace.Migrations
 
                     b.HasKey("CommentId", "UserId");
 
-                    b.HasIndex("UserId", "CommentId")
-                        .HasDatabaseName("IX_CommentLikes_UserId_CommentId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("CommentLikes");
                 });
